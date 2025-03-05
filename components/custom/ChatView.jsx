@@ -40,7 +40,7 @@ function ChatView() {
             workspaceId:id
         });
         setMessages(result?.messages)
-        console.log(result);
+        //console.log(result);
     }
 
     useEffect(()=>{

@@ -12,7 +12,7 @@ const UpdateToken = useMutation(api.users.UpdateToken)
 const [selectedOption , setSelectedOption]=useState()
   const onPaymentSuccess=async ()=>{
      const token =userDetail?.token + Number(selectedOption?.token)
-      console.log(token);
+      //console.log(token);
       await UpdateToken({
         token:token,
         userId:userDetail?._id

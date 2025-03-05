@@ -21,7 +21,7 @@ export default function WorkspaceHistory() {
             userId:userDetail?._id
         });
         setWorkspaceList(result);
-            // console.log(result);   
+            // //console.log(result);   
     }
 
   return (
