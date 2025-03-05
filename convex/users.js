@@ -20,7 +20,7 @@ export const CreateUser = mutation({
                 uid: args.uid,
                 token:50000,
             });
-           console.log(result);
+        //    console.log(result);
         }
 
     }

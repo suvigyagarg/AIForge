@@ -14,7 +14,7 @@ export default function SandpackPreviewClient() {
    const GetSandpackClient =async()=>{
     const client =previewRef.current?.getClient();
     if(client){
-       console.log(client)
+      //  console.log(client)
        const result = await client.getCodeSandboxURL();
        if(action?.actionType =="deploy"){
         window.open('https://'+result?.sandboxId+'.csb.app/')

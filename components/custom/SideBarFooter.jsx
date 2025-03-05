@@ -2,12 +2,11 @@ import { HelpCircle, LogOut, Settings, Wallet } from 'lucide-react'
 import React from 'react'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
-import { useSidebar } from '../ui/sidebar'
+import { googleLogout } from '@react-oauth/google';
 
-export default function SideBarFooter() {
-    const router =useRouter()
-    const {toggleSidebar} = useSidebar()
-    const options =[
+function SideBarFooter() {
+    const router=useRouter();
+    const options=[
         {
             name:'Settings',
             icon:Settings
@@ -23,26 +22,38 @@ export default function SideBarFooter() {
         },
         {
             name:'Sign Out',
-            icon:LogOut
+            icon:LogOut,
+            path:'signOut'
         }
     ]
 
-  const onOptionClick=(option)=>{
-      router.push(option.path)
-  }
+    const onOptionClick=(option)=>{
+       
+        if(option?.path=='signOut')
+        {
+            googleLogout();
+            if(typeof window!==undefined)
+            {
+                localStorage.clear();
+            }
+            router.push('/');
+            window.location.reload();
+            return ;
+        }
+        router.push(option.path)
+    }
   return (
     <div className='p-2 mb-10'>
-        {options.map((option,index )=>(
-           <Button 
-           onClick={()=>{
-            toggleSidebar()
-            onOptionClick(option);
-           }}
-           variant='ghost' key={index} className='w-full flex justify-start my-3'>
-            <option.icon/>
-            {option.name}
-           </Button> 
+        {options.map((option,index)=>(
+            <Button variant="ghost" 
+            onClick={()=>onOptionClick(option)}
+            className="w-full flex justify-start my-3" key={index}>
+                <option.icon/>
+                {option.name}
+            </Button>
         ))}
     </div>
   )
 }
+
+export default SideBarFooter
