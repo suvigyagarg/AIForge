@@ -14,6 +14,11 @@ import Prompt from '@/data/Prompt';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { useSidebar } from '../ui/sidebar';
+import { toast } from 'sonner';
+
+export const countToken =(inputText)=>{
+  return inputText.trim().split(/\s+/).filter(word => word).length;
+}
 
 export default function ChatView() {
   const { id } = useParams();
@@ -24,6 +29,7 @@ export default function ChatView() {
   const [loading, setLoading] = useState(false);
   const UpdateMessages = useMutation(api.workspace.UpdateMessages)
   const {toggleSidebar} =useSidebar()
+  const UpdateTokens =useMutation(api.users.UpdateToken);
 
   useEffect(() => {
     id && GetWorkspaceData();
@@ -34,7 +40,8 @@ export default function ChatView() {
     const result = await convex.query(api.workspace.GetWorkspace, {
       workspaceId: id
     });
-    setMessages(result?.messages);
+    // Ensure messages is always an array
+    setMessages(result?.messages || []);
     console.log(result);
   }
 
@@ -51,29 +58,44 @@ export default function ChatView() {
       content: result.data.result
     }
 
-    setMessages(prev => [...prev, aiResp])
+    // Ensure prev is an array
+    setMessages(prev => [...(prev || []), aiResp])
 
     await UpdateMessages({
       workspaceId: id,
-      messages: [...messages, aiResp]
+      messages: [...(messages || []), aiResp]
+    })
+
+    const token = Number(userDetail?.token) - Number(countToken(JSON.stringify(aiResp)));
+    setUserDetail(prev=>({
+      ...prev,
+      token:token
+    }))
+    await UpdateTokens({
+      userId: userDetail?._id,
+      token: token
     })
 
     setLoading(false);
   }
 
   useEffect(() => {
-    if (messages?.length > 0) {
-      const role = messages[messages?.length - 1].role;
-      if (role == 'user') {
+    // Add additional checks to prevent errors
+    if (Array.isArray(messages) && messages.length > 0) {
+      const role = messages[messages.length - 1].role;
+      if (role === 'user') {
         GetAiResponse();
       }
     }
-
   }, [messages]);
 
-
   const onGenerate = (input) => {
-    setMessages(prev => [...prev, {
+    if(userDetail?.token <10){
+      toast('You dont have enough token!')
+      return;
+    }
+     // Ensure prev is an array
+    setMessages(prev => [...(prev || []), {
       role: 'user',
       content: input
     }]);
@@ -81,21 +103,19 @@ export default function ChatView() {
   }
 
   return (
-    <div className='relative h-[85vh] flex flex-col'>
+    <div className='relative h-[83vh] flex flex-col'>
       <div className='flex-1 overflow-y-scroll scrollbar-hide pl-5'>
-        {messages?.map((message, index) => (
+        {(Array.isArray(messages) ? messages : []).map((message, index) => (
           <div key={index}
             className='p-3 mb-2 rounded-lg flex gap-2 items-center leading-7'
             style={{
               backgroundColor: colors.CHAT_BACKGROUND
             }}>
-            {message?.role == 'user' && <Image src={userDetail?.picture} alt='userImage' width={35} height={35} className='rounded-full' />}
+            {message?.role === 'user' && <Image src={userDetail?.picture} alt='userImage' width={35} height={35} className='rounded-full' />}
             <div className='flex flex-col'>
-              <ReactMarkdown >{message.content}</ReactMarkdown>
+              <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
-
           </div>
-
         ))}
         {loading && <div className='p-3 mb-2 rounded-lg flex gap-2 items-center'
           style={{
@@ -107,17 +127,18 @@ export default function ChatView() {
       </div>
 
       <div className='flex gap-2 items-end'>
-     {userDetail&&<Image 
-     className='rounded-full cursor-pointer '
-     onClick={toggleSidebar}
-     src={userDetail?.picture} alt='user' width={30} height={30} />
-    } <div
-          className="p-5 border rounded-xl max-w-2xl w-full mt-3 "
+        {userDetail && <Image 
+          className='rounded-full cursor-pointer'
+          onClick={toggleSidebar}
+          src={userDetail?.picture} alt='user' width={30} height={30} 
+        />}
+        <div
+          className="p-5 border rounded-xl max-w-2xl w-full mt-3"
           style={{
             backgroundColor: colors.BACKGROUND,
           }}
         >
-          <div className="flex gap-2 ">
+          <div className="flex gap-2">
             <textarea
               placeholder={Lookup.INPUT_PLACEHOLDER}
               value={userInput}
@@ -127,7 +148,8 @@ export default function ChatView() {
             {userInput && (
               <ArrowRight
                 onClick={() => onGenerate(userInput)}
-                className="bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer" />
+                className="bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer" 
+              />
             )}
           </div>
           <div>
@@ -135,7 +157,6 @@ export default function ChatView() {
           </div>
         </div>
       </div>
-
     </div>
   )
 }

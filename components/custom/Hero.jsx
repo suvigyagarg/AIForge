@@ -9,6 +9,7 @@ import SignInDialog from "./SignInDialog";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Hero() {
   const [userInput, setUserInput] = useState("");
@@ -23,6 +24,11 @@ export default function Hero() {
     if(!userDetail?.name){
         setOpenDialog(true);
         return ;
+    }
+
+    if(userDetail?.token <10){
+      toast('You dont have enough token!')
+      return;
     }
 
     const msg = {
@@ -42,7 +48,7 @@ router.push(`/workspace/${workspaceId}`);
 
 
   return (
-    <div className="flex flex-col items-center mt-36 xl:mt-52 gap-2">
+    <div className="flex flex-col items-center justify-center mt-36 xl:mt-40 gap-2">
       <h2 className="font-bold text-4xl">{Lookup.HERO_HEADING}</h2>
       <p className="text-gray-400 font-medium">{Lookup.HERO_DESC}</p>
 

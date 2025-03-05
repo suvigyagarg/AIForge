@@ -16,6 +16,10 @@ import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useParams } from 'next/navigation';
 import { Loader2Icon } from 'lucide-react';
+import { countToken } from './ChatView';
+import { UserDetailContext } from '@/context/UserDetailContext';
+import SandpackPreviewClient from './SandpackPreviewClient';
+import { ActionContext } from '@/context/ActionContext';
 
 export default function CodeView() {
   const { id } = useParams();
@@ -25,10 +29,17 @@ export default function CodeView() {
   const UpdateFiles = useMutation(api.workspace.UpdateFiles)
   const convex = useConvex();
   const [loading, setLoading] = useState(false)
-
+ const UpdateTokens =useMutation(api.users.UpdateToken);
+ const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const {action ,setAction} =useContext(ActionContext);   
+  
   useEffect(() => {
     id && GetFiles();
   }, [id])
+
+  useEffect(()=>{
+ setActiveTab('preview')
+  },[action])
 
   const GetFiles = async () => {
     setLoading(true)
@@ -67,6 +78,20 @@ export default function CodeView() {
       workspaceId: id,
       files: aiResp?.files,
     });
+
+    const token = Number(userDetail?.token) - Number(countToken(JSON.stringify(aiResp)));
+
+    await UpdateTokens({
+      userId: userDetail?._id,
+      token: token
+    })
+
+    setUserDetail(prev=>({
+      ...prev,
+      token:token
+    }))
+
+    setActiveTab('code')
     setLoading(false)
   }
   return (
@@ -97,12 +122,12 @@ export default function CodeView() {
         <SandpackLayout >
           {activeTab === 'code' ?
             <>
-              <SandpackFileExplorer style={{ height: '80vh' }} />
-              <SandpackCodeEditor style={{ height: '80vh' }} />
+              <SandpackFileExplorer style={{ height: '75vh' }} />
+              <SandpackCodeEditor style={{ height: '75vh' }} />
             </> :
             <>
-              <SandpackFileExplorer style={{ height: '80vh' }} />
-              <SandpackPreview style={{ height: '80vh' }} showNavigator={true} />
+              <SandpackFileExplorer style={{ height: '75vh' }} />
+           <SandpackPreviewClient/>
             </>}
         </SandpackLayout>
       </SandpackProvider>
