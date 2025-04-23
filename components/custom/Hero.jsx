@@ -9,6 +9,7 @@ import SignInDialog from './SignInDialog';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 function Hero() {
     const [userInput, setUserInput] = useState();
@@ -41,10 +42,10 @@ function Hero() {
     }
 
     return (
-        <div className='flex flex-col items-center mt-28 justify-center gap-2 p-10'>
+        <div className='flex flex-col items-center mt-22 justify-center gap-2 p-10'>
             <h2 className='font-bold text-4xl'>{Lookup.HERO_HEADING}</h2>
             <p className='text-gray-400 font-medium'>{Lookup.HERO_DESC}</p>
-            <div className='p-5 border rounded-xl max-w-xl w-full mt-3 '
+            <div className='p-5 border rounded-xl max-w-xl w-full mt-5 '
                 style={{
                     backgroundColor: Colors.BACKGROUND
                 }}>
@@ -58,7 +59,7 @@ function Hero() {
                         className='bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer' />}
                 </div>
                 <div>
-                    <Link className='h-5 w-5' />
+                    {/* <Link className='h-5 w-5' /> */}
                 </div>
             </div>
 
@@ -70,6 +71,10 @@ function Hero() {
                      text-gray-400 hover:text-white cursor-pointer'
                     >{suggestion}</h2>
                 ))}
+            </div>
+            <div className='flex mt-8 flex-wrap max-w-2xl items-center justify-center gap-3'>
+            <h2 className='p-1 px-2 font-base text-gray-400 font-semibold '>or start a blank app with your favorite stack</h2>
+            
             </div>
             <SignInDialog openDialog={openDialog}
                 closeDialog={(v) => setOpenDialog(v)} />

@@ -35,7 +35,7 @@ export default function Provider({ children }) {
             }
             const result = await convex.query(api.users.GetUser, { email: user?.email });
             setUserDetail(result);
-            // //console.log(result);
+            console.log(result);
 
         }
     }
@@ -52,15 +52,15 @@ export default function Provider({ children }) {
                                     attribute="class"
                                     defaultTheme="dark"
                                     enableSystem
-                                    disableTransitionOnChange>
+                                    disableTransitionOnChange 
+                                    >
                                     <SidebarProvider defaultOpen={false} className="flex flex-col ">
-                                        <Header />
+                                       <div className='bg-gradient-to-br from-sky-900 via-black to-black min-h-screen '> 
+                                       <Header />
                                         {children}
                                         <div className="absolute">
-
                                             <AppSidebar />
-
-                                        </div>
+                                        </div></div>
                                     </SidebarProvider>
                                 </NextThemesProvider>
                             </ActionContext.Provider>

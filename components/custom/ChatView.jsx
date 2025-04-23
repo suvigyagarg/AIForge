@@ -141,7 +141,7 @@ function ChatView() {
           className='rounded-full cursor-pointer'
           onClick={toggleSidebar}
           alt='user' width={30} height={30}/>} */}
-        <div className='p-5 border rounded-xl max-w-xl w-full mt-3 '
+        <div className='p-5 border-solid border-1 border-gray-700 rounded-xl max-w-xl w-full mt-3 '
             style={{
                 backgroundColor:Colors.BACKGROUND
             }}>
@@ -155,9 +155,9 @@ function ChatView() {
                    onClick={()=>onGenerate(userInput)}
                    className='bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer' />}
                 </div>
-                <div>
+                {/* <div>
                     <Link className='h-5 w-5'/>
-                </div>
+                </div> */}
             </div>
             </div>
     </div>
