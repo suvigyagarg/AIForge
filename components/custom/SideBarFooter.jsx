@@ -59,9 +59,10 @@ function SideBarFooter() {
             </Button>
         ))}
         </div>
-        <div className=' h-15 flex'>
-         <h1 className='font-white p-3'>
-          <Image
+        <div className=' h-15 flex p-3 pb-4 items-center justify-between'>
+         <div className='font-white flex gap-2 items-center'>
+        {userDetail &&
+            <Image
                 src={userDetail?.picture}
                      alt="user"
                      width={32}
@@ -69,7 +70,12 @@ function SideBarFooter() {
                      className=" rounded-full w-[30px] cursor-pointer"
                     //  onClick={toggleSidebar}
                    />
-         </h1>
+          }
+            <h1 className='text-xs font-bold text-white ml-2 mb-2'>
+                {userDetail?.email}
+            </h1>       
+                
+         </div>
         </div>
         
     </div>

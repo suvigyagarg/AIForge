@@ -25,15 +25,15 @@ export default function Header() {
   };
 
   return (
-    <div className="p-4 flex justify-between items-center">
+    <div className="p-4 w-full flex justify-between items-center">
       <Link href={"/"}>
         <Image src={"/logo.png"} alt="Logo" width={48} height={48} />
       </Link>
       {!userDetail?.name ? (
-        <div className="flex gap-5">
+        <div className="flex gap-5 ml-auto">
           <Button
             className="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 
-           rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center
+           rounded-lg text-sm px-5 py-2.5 text-center 
            dark:focus:ring-gray-500 me-2 mb-2 font-bold"
             onClick={setOpenLoginDialog}
           >
@@ -75,7 +75,7 @@ export default function Header() {
       <div className="flex items-end">
           
         {userDetail && (
-          <div>
+          <div className="flex gap-2 items-center">
           <SocialIcon
             url="https://github.com/suvigyagarg"
             bgColor="black"
@@ -90,16 +90,16 @@ export default function Header() {
             url="https://x.com/confused_mnkey"
              bgColor="black"
             fgColor="white"
-            className="w-3 h-3"
           />
-            <Image
+          {userDetail&& <Image
             src={userDetail?.picture}
             alt="user"
-            width={32}
-            height={32}
-            className=" w-[30px] cursor-pointer"
+            width={34}
+            height={34}
+            className=" w-[30px] cursor-pointer rounded-full"
             onClick={toggleSidebar}
-          />
+          /> }
+            
           </div>
          
         )}
