@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import colors from "@/data/Colors";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { useSidebar } from "../ui/sidebar";
 import { usePathname } from "next/navigation";
@@ -75,28 +74,31 @@ export default function Header() {
       <div className="flex items-end">
           
         {userDetail && (
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center">
           <SocialIcon
             url="https://github.com/suvigyagarg"
             bgColor="black"
             fgColor="white"
+            style={{ height: '40px', width: '40px' }}
           />
           <SocialIcon
             url="https://www.linkedin.com/in/suvigya-garg-16b76a24a/"
             bgColor="black"
             fgColor="white"
+            style={{ height: '40px', width: '40px' }}
           />
           <SocialIcon
             url="https://x.com/confused_mnkey"
              bgColor="black"
             fgColor="white"
+            style={{ height: '36px', width: '36px' }}
           />
           {userDetail&& <Image
             src={userDetail?.picture}
             alt="user"
             width={34}
             height={34}
-            className=" w-[30px] cursor-pointer rounded-full"
+            className=" w-[30px] cursor-pointer rounded-full ml-2"
             onClick={toggleSidebar}
           /> }
             

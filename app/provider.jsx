@@ -52,15 +52,16 @@ export default function Provider({ children }) {
                                     attribute="class"
                                     defaultTheme="dark"
                                     enableSystem
-                                    disableTransitionOnChange 
-                                    >
+                                    disableTransitionOnChange
+                                >
                                     <SidebarProvider defaultOpen={false} className="flex flex-col ">
-                                       <div className='bg-gradient-to-br from-sky-900 via-black to-black min-h-screen '> 
-                                       <Header />
-                                        {children}
-                                        <div className="absolute">
-                                            <AppSidebar />
-                                        </div></div>
+                                        <div className='bg-gradient-to-br from-sky-900 via-black to-black min-h-screen '>
+                                            <Header />
+                                            {children}
+                                            <div className="absolute">
+                                                <AppSidebar />
+                                            </div>
+                                        </div>
                                     </SidebarProvider>
                                 </NextThemesProvider>
                             </ActionContext.Provider>
