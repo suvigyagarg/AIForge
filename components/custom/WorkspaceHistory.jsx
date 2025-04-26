@@ -26,13 +26,13 @@ export default function WorkspaceHistory() {
 
   return (
     <div>
-        <h2 className="font-medium text-lg">Your Chats</h2>
+        <h2 className="font-bold text-2xl">Your Chats</h2>
         <div>
             {workspaceList&&workspaceList?.map((workspace ,index)=>(
                <Link href={'/workspace/'+workspace?._id} key={index}>
                 <h2 
                 onClick={toggleSidebar}
-                 className="text-sm text-gray-400 mt-2 font-light hover:text-white cursor-pointer">
+                 className="text-[17px] text-gray-400 mt-2 font-light hover:text-white cursor-pointer">
                    {workspace?.messages[0]?.content}
                 </h2>
                 </Link>
