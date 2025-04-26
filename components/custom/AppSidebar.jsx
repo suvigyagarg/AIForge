@@ -18,7 +18,7 @@ export function AppSidebar() {
   const router =useRouter();
   const {toggleSidebar}=useSidebar();
   return (
-    <Sidebar className="">
+    <Sidebar>
     <SidebarHeader className="p-5 pb-0 ">
     <div className='flex justify-between items-center '>
       <Image src={'/logo.png'} alt='log' width={40} height={40}/>

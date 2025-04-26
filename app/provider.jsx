@@ -35,7 +35,7 @@ export default function Provider({ children }) {
             }
             const result = await convex.query(api.users.GetUser, { email: user?.email });
             setUserDetail(result);
-            console.log(result);
+            // console.log(result);
 
         }
     }

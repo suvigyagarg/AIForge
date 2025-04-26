@@ -68,7 +68,6 @@ function SideBarFooter() {
                      width={32}
                      height={32}
                      className=" rounded-full w-[30px] cursor-pointer"
-                    //  onClick={toggleSidebar}
                    />
           }
             <h1 className='text-xs font-bold text-white ml-2 mb-2'>
