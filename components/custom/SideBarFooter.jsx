@@ -1,11 +1,16 @@
 import { HelpCircle, LogOut, Settings, Wallet } from 'lucide-react'
-import React from 'react'
+import React, {useContext} from 'react'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
 import { googleLogout } from '@react-oauth/google';
+import { UserDetailContext } from "@/context/UserDetailContext";
+import Image from "next/image";
+
+
 
 function SideBarFooter() {
     const router=useRouter();
+    const { userDetail, setUserDetail } = useContext(UserDetailContext);
     const options=[
         {
             name:'Settings',
@@ -43,7 +48,8 @@ function SideBarFooter() {
         router.push(option.path)
     }
   return (
-    <div className='p-2 mb-10'>
+    <div >
+        <div className='bg-black py-1'>
         {options.map((option,index)=>(
             <Button variant="ghost" 
             onClick={()=>onOptionClick(option)}
@@ -52,6 +58,25 @@ function SideBarFooter() {
                 {option.name}
             </Button>
         ))}
+        </div>
+        <div className=' h-15 flex p-3 pb-4 items-center justify-between'>
+         <div className='font-white flex gap-2 items-center'>
+        {userDetail &&
+            <Image
+                src={userDetail?.picture}
+                     alt="user"
+                     width={32}
+                     height={32}
+                     className=" rounded-full w-[30px] cursor-pointer"
+                   />
+          }
+            <h1 className='text-xs font-bold text-white ml-2 mb-2'>
+                {userDetail?.email}
+            </h1>       
+                
+         </div>
+        </div>
+        
     </div>
   )
 }
