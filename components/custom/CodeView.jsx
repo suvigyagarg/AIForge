@@ -31,6 +31,8 @@ function CodeView() {
   const [loading,setLoading]=useState(false);
   const UpdateTokens=useMutation(api.users.UpdateToken);
   const {action,setAction}=useContext(ActionContext);
+  const [dependencies, setDependencies] = useState({});
+  const [techStack ,setTechStack] =useState("static");
 
   useEffect(()=>{
     id&&GetFiles();
@@ -46,7 +48,7 @@ function CodeView() {
     const result=await convex.query(api.workspace.GetWorkspace,{
       workspaceId:id
     });
-    const mergedFiles={...Lookup.DEFAULT_FILE,...result?.fileData}
+    const mergedFiles={...result?.fileData}
     setFiles(mergedFiles);
     setLoading(false)
   }
@@ -69,10 +71,12 @@ function CodeView() {
     const result=await axios.post('/api/gen-ai-code',{
       prompt:PROMPT
     });
-    //console.log(result.data);
+    // console.log(result.data);
     const aiResp=result.data;
-    
-    const mergedFiles={...Lookup.DEFAULT_FILE,...aiResp?.files}
+    setDependencies(aiResp.dependancies);
+    setTechStack(aiResp?.techStack);
+
+    const mergedFiles={...aiResp?.files}
     setFiles(mergedFiles);
     await UpdateFiles({
       workspaceId:id,
@@ -118,12 +122,13 @@ function CodeView() {
               Preview</h2>
         </div>
       </div>
-      <SandpackProvider 
+      <SandpackProvider
+      template={techStack}
+      theme={'dark'}
       files={files}
-      template="react" theme={'dark'}
       customSetup={{
         dependencies:{
-          ...Lookup.DEPENDANCY
+            ...dependencies
         }
       }}
       options={{
