@@ -4,8 +4,8 @@ import ConvexClientProvider from "./ConvexClientProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata ={
-  title:"AIForge",
-  description:"Generate Code using AI"
+  title:"AI Forge",
+  description:"Prompt, run, edit, and share full-stack web apps."
 }
 
 export default function RootLayout({ children }) {
